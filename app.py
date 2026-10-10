@@ -204,7 +204,7 @@ with st.sidebar:
         help="Select backtest period (last N years of the loaded data)"
     )
 
-    run_backtest = st.button("🔄 Run Backtest", use_container_width=True,
+    run_backtest = st.button("🔄 Run Backtest", width="stretch",
                              key="run_backtest_btn")
 
 # Snapshot of the CURRENT sidebar inputs (used for the stale-results check below)
@@ -347,7 +347,7 @@ with tab1:
         template='plotly_white'
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     # Chart explanation
     with st.expander("📖 Chart Explanation"):
@@ -456,7 +456,7 @@ with tab2:
             xaxis_title="Date", yaxis_title="Equity ($)",
             height=400, template="plotly_white", hovermode="x unified"
         )
-        st.plotly_chart(fig_eq, use_container_width=True)
+        st.plotly_chart(fig_eq, width="stretch")
 
         # Profit distribution chart (closed trades only)
         if total_closed:
@@ -477,7 +477,7 @@ with tab2:
                 showlegend=False,
                 template='plotly_white'
             )
-            st.plotly_chart(fig_dist, use_container_width=True)
+            st.plotly_chart(fig_dist, width="stretch")
         else:
             st.caption("No closed trades to build a profit distribution.")
 
@@ -503,7 +503,7 @@ with tab3:
             'HoldingDays', 'ProfitPct', 'SellReason', 'Status'
         ]]
 
-        st.dataframe(display_df, use_container_width=True, height=600)
+        st.dataframe(display_df, width="stretch", height=600)
 
         st.caption(
             "SignalDate = close of the golden-cross day | BuyDate = next trading "
@@ -634,7 +634,7 @@ with tab4:
                     xaxis_title="Date", yaxis_title="Equity ($)",
                     height=420, template="plotly_white", hovermode="x unified"
                 )
-                st.plotly_chart(fig_pf, use_container_width=True)
+                st.plotly_chart(fig_pf, width="stretch")
 
                 st.markdown("**Per-stock performance**")
                 ps = pf["per_stock"].copy()
@@ -649,7 +649,7 @@ with tab4:
                     "End Weight": ps["EndWeight%"].apply(lambda x: f"{x:.2f}%"),
                     "Contribution": ps["Contribution%"].apply(lambda x: f"{x:.2f}%"),
                 })
-                st.dataframe(display_ps, use_container_width=True)
+                st.dataframe(display_ps, width="stretch")
 
                 # Stock returns vs portfolio return
                 fig_ret = go.Figure()
@@ -666,7 +666,7 @@ with tab4:
                     xaxis_title="Stock", yaxis_title="Return (%)",
                     height=380, template="plotly_white", showlegend=False
                 )
-                st.plotly_chart(fig_ret, use_container_width=True)
+                st.plotly_chart(fig_ret, width="stretch")
 
                 # End-of-period composition
                 st.markdown("**End-of-period portfolio composition**")
@@ -679,7 +679,7 @@ with tab4:
                     title="Final Equity by Stock",
                     height=400, template="plotly_white"
                 )
-                st.plotly_chart(fig_pie, use_container_width=True)
+                st.plotly_chart(fig_pie, width="stretch")
 
                 with st.expander("📖 Portfolio Assumptions"):
                     st.markdown(f"""
@@ -765,7 +765,7 @@ with tab5:
             xaxis_title="Date", yaxis_title="Equity ($)",
             height=480, template="plotly_white", hovermode="x unified"
         )
-        st.plotly_chart(fig_cmp, use_container_width=True)
+        st.plotly_chart(fig_cmp, width="stretch")
 
         # --- Comparison table ---
         st.markdown("**Comparison table**")
@@ -780,7 +780,7 @@ with tab5:
             "Win Rate": m["Win Rate%"].apply(
                 lambda x: "N/A" if x is None or pd.isna(x) else f"{x:.2f}%"),
         })
-        st.dataframe(tbl, use_container_width=True)
+        st.dataframe(tbl, width="stretch")
         st.caption(
             "'N/A' = metric does not apply (Buy & Hold has no trades; a strategy "
             "with no closed trades has no win rate). Results are reported as "
@@ -806,7 +806,7 @@ with tab5:
                         st.dataframe(show[[
                             "SignalDate", "BuyDate", "SellDate", "ProfitPct",
                             "SellReason", "Status"
-                        ]], use_container_width=True)
+                        ]], width="stretch")
 
         # --- Signals filtered by B ---
         st.markdown("---")
@@ -827,7 +827,7 @@ with tab5:
             fdf["Close"] = fdf["Close"].apply(lambda x: f"${x:.2f}")
             fdf["RSI"] = fdf["RSI"].apply(
                 lambda x: "NaN" if x is None or pd.isna(x) else f"{x:.1f}")
-            st.dataframe(fdf, use_container_width=True)
+            st.dataframe(fdf, width="stretch")
             st.caption(
                 f"B skipped {comp['n_blocked']} of {comp['n_crossings']} "
                 "golden-cross signal(s); the buy order for those dates was "
@@ -886,7 +886,7 @@ with tab6:
         with scol2:
             st.write("")
             st.write("")
-            if st.button("💾 Save Experiment", use_container_width=True,
+            if st.button("💾 Save Experiment", width="stretch",
                          key="exp_save_btn"):
                 try:
                     exp = _build_experiment(kind_choice, exp_name)
@@ -964,7 +964,7 @@ with tab6:
                     "Stock Return": psd["StockReturn%"].apply(lambda x: f"{x:.2f}%"),
                     "End Value": psd["EndValue"].apply(lambda x: f"${x:,.2f}"),
                     "End Weight": psd["EndWeight%"].apply(lambda x: f"{x:.2f}%"),
-                }), use_container_width=True)
+                }), width="stretch")
             else:
                 sdf = pd.DataFrame(met["strategies"])
                 st.dataframe(pd.DataFrame({
@@ -976,7 +976,7 @@ with tab6:
                         lambda x: "N/A" if x is None or pd.isna(x) else f"{int(x)}"),
                     "Win Rate": sdf["Win Rate%"].apply(
                         lambda x: "N/A" if x is None or pd.isna(x) else f"{x:.2f}%"),
-                }), use_container_width=True)
+                }), width="stretch")
                 st.caption(
                     f"Blocked signals by B: {met.get('n_blocked', 0)} "
                     f"of {met.get('n_crossings', 0)} golden crosses"
@@ -984,7 +984,7 @@ with tab6:
 
             st.plotly_chart(
                 _plot_saved_curves(exp, f"{exp['name']} - saved curve(s)"),
-                use_container_width=True)
+                width="stretch")
 
             b1, b2, b3 = st.columns(3)
             b1.download_button(
